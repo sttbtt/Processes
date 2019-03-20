@@ -16,7 +16,38 @@ char* msg3 = "hello world #3";
 
 int main(void)
 {
-    // Your code here
+    char inbuf[MSGSIZE];
+    int p[2];
+
+    int rc = fork();
+
+    if (rc < 0) {
+        fprintf(stderr, "fork failed\n");
+        exit(1);
+
+    } else if (rc == 0) {
+        if (pipe(p) < 0) {
+            fprintf(stderr, "pipe failed\n");
+            exit(1);
+        }
+        write(p[1], msg1, MSGSIZE);
+        write(p[1], msg2, MSGSIZE);
+        write(p[1], msg3, MSGSIZE);
+        printf("Child\n");
+        
+    } else {
+        //wait(NULL);
+        if (pipe(p) < 0) {
+            fprintf(stderr, "pipe failed\n");
+            exit(1);
+        }
+        for (int i = 0; i < 3; i++) {
+            read(p[0], inbuf, MSGSIZE);
+            printf("%s\n", inbuf);
+            printf("Parent\n");
+        }
+        
+    }
     
     return 0;
 }

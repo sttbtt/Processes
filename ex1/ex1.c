@@ -9,8 +9,8 @@
 int main(void)
 {
     int x = 1;
-    
-    printf("Starting x = %d\n", x);
+
+    printf("Starting x = %d from (pid: %d)\n", x, (int) getpid());
 
     int rc = fork();
 
@@ -19,10 +19,10 @@ int main(void)
         exit(1);
     } else if (rc == 0) {
         x = 100;
-        printf("The child process changed x to 100 and it is %d\n", x);
+        printf("The child process (pid: %d) changed x to 100 and it is %d\n", (int) getpid(), x);
     } else {
         x = 200;
-        printf("The parent process changed x to 200 and it is %d\n",x);
+        printf("The parent process (pid: %d) changed x to 200 and it is %d\n", (int) getpid(), x);
     }
 
     printf("Ending x = %d\n", x);
