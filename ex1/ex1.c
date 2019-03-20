@@ -9,6 +9,7 @@
 int main(void)
 {
     int x = 1;
+    
     printf("Starting x = %d\n", x);
 
     int rc = fork();
