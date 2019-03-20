@@ -8,7 +8,23 @@
 
 int main(void)
 {
-    // Your code here
+    int x = 1;
+    printf("Starting x = %d\n", x);
+
+    int rc = fork();
+
+    if (rc < 0) {
+        fprintf(stderr, "fork failed\n");
+        exit(1);
+    } else if (rc == 0) {
+        x = 100;
+        printf("The child process changed x to 100 and it is %d\n", x);
+    } else {
+        x = 200;
+        printf("The parent process changed x to 200 and it is %d\n",x);
+    }
+
+    printf("Ending x = %d\n", x);
 
     return 0;
 }
