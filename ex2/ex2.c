@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <string.h>
 
 int main(void)
 {
@@ -19,17 +20,16 @@ int main(void)
     if (rc < 0) {
         fprintf(stderr, "fork failed\n");
         exit(1);
+
     } else if (rc == 0) {
         printf("The child process (pid: %d)\n", (int) getpid());
-
-        char *argv[] = {"%s\n", "This is from the child.", NULL};
-        execvp();
-        perror("exec");
-        exit(2);
+        char *cstring = "This is from the child.\n";
+        fwrite(cstring, sizeof(char), strlen(cstring), fp);
 
     } else {
         printf("The parent process (pid: %d)\n", (int) getpid());
-        fprintf(fp, "%s\n","This is from the parent.");
+        char *pstring = "This is from the parent.\n";
+        fwrite(pstring, sizeof(char), strlen(pstring), fp);
     }
 
     fclose(fp);
