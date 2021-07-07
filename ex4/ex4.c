@@ -10,7 +10,30 @@
 
 int main(void)
 {
-    // Your code here    
+    printf("\nStarting from (pid: %d)\n", (int) getpid());
+
+    int rc = fork();
+
+    if (rc < 0) {
+        fprintf(stderr, "fork failed\n");
+        exit(1);
+
+    } else if (rc == 0) {
+        printf("\nThe child process (pid: %d)\n", (int) getpid());
+
+        execlp("ls", "ls", "-l", NULL);
+        // execl("/bin/ls", "ls", "-l", NULL);
+        // char *args[] = {"ls", "-l", NULL};
+        // execvp("ls", args);
+        // execv("/bin/ls", args);
+
+        perror("exec");
+        exit(1);
+
+    } else {
+        wait(NULL);
+        printf("\nThe parent process (pid: %d)\n", (int) getpid());
+    }   
 
     return 0;
 }
